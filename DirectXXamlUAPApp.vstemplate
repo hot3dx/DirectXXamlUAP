@@ -1,0 +1,69 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name Package="{2581426E-BF4F-4A49-A42A-20EF9D51EF49}" ID="1138" />
+    <Description Package="{2581426E-BF4F-4A49-A42A-20EF9D51EF49}" ID="1112" />
+    <Icon Package="{2581426E-BF4F-4A49-A42A-20EF9D51EF49}" ID="4002" />
+    <ProjectType>VC</ProjectType>
+    <TemplateGroupID>WinRT-Native</TemplateGroupID>
+    <TemplateID>Microsoft.DirectX.DirectXXamlUAPApp</TemplateID>
+    <SortOrder>145</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>App</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <TargetPlatformName>Windows</TargetPlatformName>
+    <RequiredPlatformVersion>6.1.0</RequiredPlatformVersion>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
+    <PreviewImage>preview.png</PreviewImage>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="DirectXXamlApp.vcxproj" ReplaceParameters="true">
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">ProjectDefaultFilters.vcxproj.filters</ProjectItem>
+      <ProjectItem OpenInEditor="true" ReplaceParameters="true" TargetFileName="$safeprojectname$Main.cpp">Main.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="true" ReplaceParameters="true" TargetFileName="$safeprojectname$Main.h">Main.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="App.xaml.cpp">App.xaml.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="App.xaml.h">App.xaml.h</ProjectItem>
+      <ProjectItem OpenInEditor="true" BlendOpenInEditor="true" ReplaceParameters="true" TargetFileName="DirectXPage.xaml">DirectXPage.xaml</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="DirectXPage.xaml.cpp">DirectXPage.xaml.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="DirectXPage.xaml.h">DirectXPage.xaml.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package-native.appxmanifest</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="pch.cpp">pch.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="pch.h">pch.h</ProjectItem>
+
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Common\d3dx12.h">d3dx12.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Common\DeviceResources.cpp">DeviceResources.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Common\DeviceResources.h">DeviceResources.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Common\DirectXHelper.h">DirectXHelper.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Common\StepTimer.h">StepTimer.h</ProjectItem>
+
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Content\Sample3DSceneRenderer.cpp">Sample3DSceneRenderer.cpp</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Content\Sample3DSceneRenderer.h">Sample3DSceneRenderer.h</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Content\SamplePixelShader.hlsl">SamplePixelShader.hlsl</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Content\SampleVertexShader.hlsl">SampleVertexShader.hlsl</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="true" TargetFileName="Content\ShaderStructures.h">ShaderStructures.h</ProjectItem>
+
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\LockScreenLogo.scale-200.png">LockScreenLogo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\SplashScreen.scale-200.png">SplashScreen.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Square150x150Logo.scale-200.png">Square150x150Logo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Square44x44Logo.scale-200.png">Square44x44Logo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">Square44x44Logo.targetsize-24_altform-unplated.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\StoreLogo.png">StoreLogo.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Wide310x150Logo.scale-200.png">Wide310x150Logo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\AutoDraw2.ico">AutoDraw2.ico</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\AppXamlDX12.png">AppXamlDX12.png</ProjectItem>
+    </Project>
+    <CustomParameters>
+      <CustomParameter Name="$ext_safeprojectname$" Value="$safeprojectname$" />
+    </CustomParameters>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Microsoft.VisualStudio.WinRT.TemplateWizards, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>Microsoft.VisualStudio.WinRT.TemplateWizards.UpdatePublisherInManifestWizard</FullClassName>
+  </WizardExtension>
+  <WizardExtension>
+    <Assembly>Microsoft.VisualStudio.Universal.TemplateWizards, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>Microsoft.VisualStudio.Universal.TemplateWizards.PlatformVersion.Wizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>
