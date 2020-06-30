@@ -1,4 +1,5 @@
 DirectX12UAP c++ template by Hot3dx - Jeff Kubitz
+![Screenshot](https://github.com/hot3dx/DirectXXamlUAP/blob/master/Screenshot%20(46).png)
 
 Designed to be placed in:
 1) In Directory:
