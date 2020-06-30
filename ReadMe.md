@@ -17,6 +17,8 @@ DirectX12XamlUAPApp
 
 4) Create Project DirectX12XamlUAP
 
+5) Need Nuget Package WinPixEventRuntime.1.0.200127001
+
 It is the DirectX 12 Xaml spinning cube
 
 Click the mouse and the cube stops rotating.
