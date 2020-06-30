@@ -36,9 +36,13 @@ tablets, and other fine devices.
 
 Donations Appreciated:
 BTC 33DN8TgAe879tDkhsCEpneoVrydHbasuLm
+
 BCHABC qruhxl8y2753fg0qfx7t8zfqzw92rvaxussk7fcnke
+
 LTC MEQVCCxa5ZZkmGqAfYfRvipNcY4BaTRrFm
+
 By: 
+![Ico](https://github.com/hot3dx/AppXamlDX12/blob/master/Assets/AutoDraw2.ico)
 
 Should you want to do anything complicated Chuck Walbourn's DirectX 12 Toolkit
 That I also have will attach to this with a little work.
