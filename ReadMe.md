@@ -26,6 +26,9 @@ DirectX12XamlUAPApp
 
 It is the DirectX 12 Xaml spinning cube
 
+The sample works with a warpadapter or a DirectX12 Capable Graphics Card on Windows 10!
+The Sample is tested in x86 and x64 but not Arm
+
 Click the mouse and the cube stops rotating.
 
 Have fun and there is nothing like being able to add a GUI
