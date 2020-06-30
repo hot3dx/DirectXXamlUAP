@@ -10,7 +10,7 @@
 #include <d2d1effects_2.h>
 #include <dwrite_3.h>
 #include <wincodec.h>
-// Uses NuGet.org package WinPixEventRuntime 1.0.190604001
+// Uses NuGet.org package WinPixEventRuntime 1.0.200127001
 #include <pix3.h>
 #include <DirectXColors.h>
 #include <DirectXMath.h>
