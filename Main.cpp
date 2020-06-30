@@ -1,8 +1,9 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "..\Common\DeviceResources.h"
 #include "$safeprojectname$Main.h"
 #include "Content\Sample3DSceneRenderer.h"
 #include "Common\DirectXHelper.h"
+
 
 using namespace $safeprojectname$;
 using namespace Windows::Foundation;
@@ -19,7 +20,7 @@ $safeprojectname$Main::$safeprojectname$Main(const std::shared_ptr<DX::DeviceRes
 	// TODO: Replace this with your app's content initialization.
 	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
 
-	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
+	//m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
@@ -29,17 +30,21 @@ $safeprojectname$Main::$safeprojectname$Main(const std::shared_ptr<DX::DeviceRes
 	*/
 }
 
-$safeprojectname$Main::~$safeprojectname$Main()
+$safeprojectname$Main::~$safeprojectname$Main() 
 {
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
+	
+	
 }
+
 
 // Updates application state when the window size changes (e.g. device orientation change)
 void $safeprojectname$Main::CreateWindowSizeDependentResources() 
 {
 	// TODO: Replace this with the size-dependent initialization of your app's content.
 	m_sceneRenderer->CreateWindowSizeDependentResources();
+	
 }
 
 void $safeprojectname$Main::StartRenderLoop()
@@ -77,6 +82,7 @@ void $safeprojectname$Main::StopRenderLoop()
 // Updates the application state once per frame.
 void $safeprojectname$Main::Update() 
 {
+	ProcessInput();
 	// Update scene objects.
 	m_timer.Tick([&]()
 	{
@@ -86,12 +92,6 @@ void $safeprojectname$Main::Update()
 	});
 }
 
-// Process all input from the user before updating game state
-void $safeprojectname$Main::ProcessInput()
-{
-	// TODO: Add per frame input handling here.
-	m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
-}
 
 // Renders the current frame according to the current application state.
 // Returns true if the frame was rendered and is ready to be displayed.
@@ -102,10 +102,37 @@ bool $safeprojectname$Main::Render()
 	{
 		return false;
 	}
+	
+	
+	//auto 
+	ID3D12GraphicsCommandList*	context = m_sceneRenderer->GetComList();
+	
+	if (context == 0x0000000000000000)
+	{
+		return m_sceneRenderer->Render(); 
+		//return false;
+	}
+	/*
+	//auto context = m_deviceResources->GetD3DDeviceContext();
+	// Reset the viewport to target the whole screen.
+	auto viewport = m_deviceResources->GetScreenViewport();
+	context->RSSetViewports(1, &viewport);
 
-		
+	// Reset render targets to the screen.
+	D3D12_CPU_DESCRIPTOR_HANDLE const depthStencilView = m_deviceResources->GetDepthStencilView();
+	CD3DX12_CPU_DESCRIPTOR_HANDLE const targets[1] = { m_deviceResources->GetRenderTargetView() };// GetBackBufferRenderTargetView()};
+	
+
+	// Clear the back buffer and depth stencil view.
+	context->ClearRenderTargetView(m_deviceResources->GetRenderTargetView(), DirectX::Colors::CornflowerBlue, 0, nullptr);
+	context->ClearDepthStencilView(depthStencilView, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	
+	context->OMSetRenderTargets(1, &m_deviceResources->GetRenderTargetView(), false, &depthStencilView);
+	*/
 	//m_fpsTextRenderer->Render();
-
+	
+	// Render the scene objects.
+	// TODO: Replace this with your app's content rendering functions.
 	return m_sceneRenderer->Render();
 }
 
@@ -147,13 +174,75 @@ void $safeprojectname$::$safeprojectname$Main::OnDeviceRemoved()
 void $safeprojectname$Main::OnDeviceLost()
 {
 	m_sceneRenderer->ReleaseDeviceDependentResources();
-	m_fpsTextRenderer->ReleaseDeviceDependentResources();
+	//m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Notifies renderers that device resources may now be recreated.
 void $safeprojectname$Main::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
-	m_fpsTextRenderer->CreateDeviceDependentResources();
+	//m_fpsTextRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
+}
+
+void $safeprojectname$::$safeprojectname$Main::WindowActivationChanged(Windows::UI::Core::CoreWindowActivationState activationState)
+{  /*
+	if (activationState == CoreWindowActivationState::Deactivated)
+	{
+		m_haveFocus = false;
+
+		switch (m_updateState)
+		{
+		case UpdateEngineState::Dynamics:
+			// From Dynamic mode, when coming out of Deactivated rather than going directly back into Graphic play
+			// go to the paused state waiting for user input to continue
+			m_updateStateNext = UpdateEngineState::WaitingForPress;
+			m_pressResult = PressResultState::ContinueLevel;
+			SetGraphicInfoOverlay(GraphicInfoOverlayState::Pause);
+			m_uiControl->ShowGraphicInfoOverlay();
+			m_graphic->PauseGraphic();
+			m_updateState = UpdateEngineState::Deactivated;
+			m_uiControl->SetAction(GraphicInfoOverlayCommand::None);
+			m_renderNeeded = true;
+			break;
+
+		case UpdateEngineState::WaitingForResources:
+		case UpdateEngineState::WaitingForPress:
+			m_updateStateNext = m_updateState;
+			m_updateState = UpdateEngineState::Deactivated;
+			m_uiControl->SetAction(GraphicInfoOverlayCommand::None);
+			m_uiControl->ShowGraphicInfoOverlay();
+			m_renderNeeded = true;
+			break;
+		}
+		// Don't have focus so shutdown input processing
+		m_controller->Active(false);
+	}
+	else if (activationState == CoreWindowActivationState::CodeActivated
+		|| activationState == CoreWindowActivationState::PointerActivated)
+	{
+		m_haveFocus = true;
+
+		if (m_updateState == UpdateEngineState::Deactivated)
+		{
+			m_updateState = m_updateStateNext;
+
+			if (m_updateState == UpdateEngineState::WaitingForPress)
+			{
+				m_uiControl->SetAction(GraphicInfoOverlayCommand::TapToContinue);
+				m_controller->WaitForPress(m_renderer->GraphicInfoOverlayUpperLeft(), m_renderer->GraphicInfoOverlayLowerRight());
+			}
+			else if (m_updateStateNext == UpdateEngineState::WaitingForResources)
+			{
+				m_uiControl->SetAction(GraphicInfoOverlayCommand::PleaseWait);
+			}
+		}
+	}*/
+}
+
+void $safeprojectname$::$safeprojectname$Main::ProcessInput()
+{
+	// TODO: Add per frame input handling here.
+		m_sceneRenderer->TrackingUpdate(m_pointerLocationX);
+	
 }
