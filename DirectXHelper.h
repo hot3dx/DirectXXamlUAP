@@ -57,12 +57,12 @@ namespace DX
 // Assigns the name of the variable as the name of the object.
 #define NAME_D3D12_OBJECT(x) DX::SetName(x.Get(), L#x)
 
-	/*
+
 #if defined(_DEBUG)
 	// Check for SDK Layer support.
 	inline bool SdkLayersAvailable()
 	{
-		HRESULT hr = D3D12CreateDevice(
+		HRESULT hr = D3D11CreateDevice(
 			nullptr,
 			D3D_DRIVER_TYPE_NULL,       // There is no need to create a real hardware device.
 			0,
@@ -78,6 +78,6 @@ namespace DX
 		return SUCCEEDED(hr);
 	}
 #endif
-*/
+	
 }
 
