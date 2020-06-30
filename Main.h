@@ -1,10 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "Common\StepTimer.h"
 #include "Common\DeviceResources.h"
 #include "Content\Sample3DSceneRenderer.h"
 //#include "Content\SampleFpsTextRenderer.h"
-// For Later
 
 // Renders Direct2D and 3D content on the screen.
 namespace $safeprojectname$
@@ -38,9 +37,19 @@ namespace $safeprojectname$
 
 		Sample3DSceneRenderer* GetSceneRenderer(){ return m_sceneRenderer.get();}
 
+		void PauseRequested() {// if //(m_updateState == $safeprojectname$::UpdateEngineState::Dynamics) 
+			m_pauseRequested = true; };
+		void PressComplete() {// if (m_updateState == $safeprojectname$::UpdateEngineState::WaitingForPress) 
+			m_pressComplete = true; };
+
+
+		void WindowActivationChanged(Windows::UI::Core::CoreWindowActivationState activationState);
+
+
 
 	private:
-		
+		// Process all input from the user before updating game state
+		void ProcessInput();
 
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
@@ -55,6 +64,14 @@ namespace $safeprojectname$
 		// Rendering loop timer.
 		DX::StepTimer m_timer;
 
+		///////////////////////////////////////////////////
+		bool                                                m_pauseRequested;
+		bool                                                m_pressComplete;
+		bool                                                m_renderNeeded;
+		bool                                                m_haveFocus;
+		bool                                                m_visible;
+		///////////////////////////////////////////////////
+		
 		// Track current input pointer position.
 		float m_pointerLocationX;
 	};
