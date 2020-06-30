@@ -5,7 +5,6 @@
 #include <synchapi.h>
 #include "DirectXPage.xaml.h"
 #include <strsafe.h>
-
 using namespace $ext_safeprojectname$;
 
 using namespace Concurrency;
@@ -18,13 +17,17 @@ using namespace Windows::Storage;
 Platform::String^ AngleKey = "Angle";
 Platform::String^ TrackingKey = "Tracking";
 
+
+//static CUSTOMVERTEX* vertices;
+
+
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
 Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_loadingComplete(false),
 	m_radiansPerSecond(XM_PIDIV4 / 2),	// rotate 45 degrees per second
 	m_angle(0.01f),
 	m_tracking(false),
-	sceneVertexCount(8), // 8 points for the cube
+	sceneVertexCount(8),
 	m_mappedConstantBuffer(nullptr),
 	m_deviceResources(deviceResources)
 {
@@ -100,7 +103,12 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		state.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		state.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 		state.SampleMask = UINT_MAX;
-        state.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+
+		state.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		//state.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
+		
+
 		state.NumRenderTargets = 1;
 		state.RTVFormats[0] = m_deviceResources->GetBackBufferFormat();
 		state.DSVFormat = m_deviceResources->GetDepthBufferFormat();
@@ -316,7 +324,6 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	});
 }
 
-
 // Initializes view parameters when the window size changes.
 void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 {
@@ -377,6 +384,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 			Rotate(m_angle);
 		}
 
+
 		// Update the constant buffer resource.
 		UINT8* destination = m_mappedConstantBuffer + (m_deviceResources->GetCurrentFrameIndex() * c_alignedConstantBufferSize);
 		memcpy(destination, &m_constantBufferData, sizeof(m_constantBufferData));
@@ -420,7 +428,7 @@ void Sample3DSceneRenderer::LoadState()
 // Rotate the 3D cube model a set amount of radians.
 void Sample3DSceneRenderer::Rotate(float radians)
 {
-	// Prepare to pass the updated model matrix to the shader
+	// Prepare to pass the updated model matrix to the shader.
 	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixRotationY(radians)));
 }
 
@@ -444,7 +452,7 @@ void Sample3DSceneRenderer::StopTracking()
 	m_tracking = false;
 }
 
-void Sample3DSceneRenderer::ReleaseDeviceDependentResources()
+void $ext_safeprojectname$::Sample3DSceneRenderer::ReleaseDeviceDependentResources()
 {
 	
 }
@@ -494,9 +502,11 @@ bool Sample3DSceneRenderer::Render()
 
 		m_commandList->OMSetRenderTargets(1, &renderTargetView, false, &depthStencilView);
 		m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 		m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
 		m_commandList->IASetIndexBuffer(&m_indexBufferView);
 
+		//m_commandList->DrawInstanced(sceneVertexCount, 1, 0, 0);
 		m_commandList->DrawIndexedInstanced(36, 1, 0, 0, 0);
 		
 
@@ -516,3 +526,38 @@ bool Sample3DSceneRenderer::Render()
 	return true;
 }
 
+VertexPositionColor* $ext_safeprojectname$::Sample3DSceneRenderer::InitVB2(VertexPositionColor* cubeVerts, int* numVerts)
+{
+	// Create the vertex buffer. Here we are allocating enough memory
+// (from the default pool) to hold all our 3 custom vertices. We also
+
+
+	auto d3dDevice = m_deviceResources->GetD3DDevice();
+	DWORD dwcolor = 0x090900FF;
+
+	int vCount[1] = { 0 };
+	
+	VertexPositionColor v[] = 
+	{
+		{ XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f) },
+		{ XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f) },
+		{ XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f) },
+		{ XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f) },
+		{ XMFLOAT3(0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f) },
+		{ XMFLOAT3(0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f) },
+		{ XMFLOAT3(0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f) },
+		{ XMFLOAT3(0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f) },
+	};
+
+	//CalculateMeshBoxAndCenterCV( v, vCount[0]);
+	int size = sizeof(VertexPositionColor);
+	
+	std::vector<VertexPositionColor> cubeVertices(vCount[0]);
+	//(VertexPositionColor*)malloc(vCount[0] * sizeof(VertexPositionColor));
+
+
+	numVerts[0] = vCount[0];
+
+	
+	return cubeVerts;
+}

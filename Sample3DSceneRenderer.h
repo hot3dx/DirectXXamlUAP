@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "..\Common\DeviceResources.h"
-#include "ShaderStructures.h"
+#include "Content\ShaderStructures.h"
 #include "..\Common\StepTimer.h"
 
 namespace $ext_safeprojectname$
@@ -16,7 +16,7 @@ namespace $ext_safeprojectname$
 		void CreateWindowSizeDependentResources();
 		void Update(DX::StepTimer const& timer);
 		bool Render();
-		//VertexPositionColor* InitVB2(VertexPositionColor* sphereVerts, int* numVerts);
+		VertexPositionColor* InitVB2(VertexPositionColor* sphereVerts, int* numVerts);
 
 		void SaveState();
 
@@ -26,6 +26,7 @@ namespace $ext_safeprojectname$
 		bool IsTracking() { return m_tracking; }
 		void ReleaseDeviceDependentResources();
 
+		//CCameraXYMoveRotation          m_CamXYMoveRotate;
 		bool                           is3DVisible;
 
 		ID3D12GraphicsCommandList* GetComList() { return m_commandList.Get(); }
@@ -66,4 +67,3 @@ namespace $ext_safeprojectname$
 		UINT    sceneVertexCount;
 	};
 }
-
