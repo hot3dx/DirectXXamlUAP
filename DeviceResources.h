@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 namespace DX
 {
@@ -29,13 +29,13 @@ namespace DX
 		void RegisterDeviceNotify(IDeviceNotify* deviceNotify);
 
 		// The size of the render target, in pixels.
-		Windows::Foundation::Size	GetOutputSize() const					{ return m_outputSize; }
+		Windows::Foundation::Size	GetOutputSize() const { return m_outputSize; }
 
 		// The size of the render target, in dips.
-		Windows::Foundation::Size	GetLogicalSize() const					{ return m_logicalSize; }
-		float						GetDpi() const							{ return m_effectiveDpi; }
+		Windows::Foundation::Size	GetLogicalSize() const { return m_logicalSize; }
 
-       	bool						IsDeviceRemoved() const { return m_deviceRemoved; }
+		float						GetDpi() const { return m_effectiveDpi; }
+		bool						IsDeviceRemoved() const { return m_deviceRemoved; }
 
 		// D3D Accessors.
 		ID3D12Device* GetD3DDevice() const { return m_d3dDevice.Get(); }
@@ -62,6 +62,16 @@ namespace DX
 		{
 			return CD3DX12_CPU_DESCRIPTOR_HANDLE(m_dsvHeap->GetCPUDescriptorHandleForHeapStart());
 		}
+
+		// D2D Accessors.
+		ID2D1Factory3* GetD2DFactory() const { return m_d2dFactory.Get(); }
+		ID2D1Device2* GetD2DDevice() const { return m_d2dDevice.Get(); }
+		ID2D1DeviceContext2* GetD2DDeviceContext() const { return m_d2dContext2.Get(); }
+		ID2D1Bitmap1* GetD2DTargetBitmap() const { return m_d2dTargetBitmap.Get(); }
+		IDWriteFactory3* GetDWriteFactory() const { return m_dwriteFactory.Get(); }
+		IWICImagingFactory2* GetWicImagingFactory() const { return m_wicFactory.Get(); }
+		D2D1::Matrix3x2F			GetOrientationTransform2D() const { return m_orientationTransform2D; }
+
 
 	private:
 		void CreateDeviceIndependentResources();
@@ -111,6 +121,7 @@ namespace DX
 		Microsoft::WRL::ComPtr<ID2D1Bitmap1>            m_d2dTargetBitmap;
 		Microsoft::WRL::ComPtr<ID2D1Bitmap1>            m_d2dTargetBitmapRight;
 		Microsoft::WRL::ComPtr<ID2D1DeviceContext>      m_d2dContext;
+		Microsoft::WRL::ComPtr<ID2D1DeviceContext2>  	m_d2dContext2;
 
 		// DirectWrite drawing components.
 		Microsoft::WRL::ComPtr<IDWriteFactory2>         m_dwriteFactory2;
@@ -146,3 +157,4 @@ namespace DX
 
 	};
 }
+
