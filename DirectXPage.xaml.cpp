@@ -1,4 +1,4 @@
-﻿//
+//
 // DirectXPage.xaml.cpp
 // Implementation of the DirectXPage class.
 //
@@ -58,26 +58,25 @@ DirectXPage::DirectXPage():
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
 	m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
-	$safeprojectname$::DirectXPage^ huh = this;
 	// Register our SwapChainPanel to get independent input pointer events
-	auto workItemHandler = ref new WorkItemHandler([huh] (IAsyncAction ^)
+	auto workItemHandler = ref new WorkItemHandler([this] (IAsyncAction ^)
 	{
 		// The CoreIndependentInputSource will raise pointer events for the specified device types on whichever thread it's created on.
-		huh->m_coreInput = huh->swapChainPanel->CreateCoreIndependentInputSource(
+		m_coreInput = swapChainPanel->CreateCoreIndependentInputSource(
 			Windows::UI::Core::CoreInputDeviceTypes::Mouse |
 			Windows::UI::Core::CoreInputDeviceTypes::Touch |
 			Windows::UI::Core::CoreInputDeviceTypes::Pen
 			);
 
 		// Register for pointer events, which will be raised on the background thread.
-		huh->m_coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(huh, &DirectXPage::OnPointerPressed);
-		huh->m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(huh, &DirectXPage::OnPointerMoved);
-		huh->m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(huh, &DirectXPage::OnPointerReleased);
+		m_coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &DirectXPage::OnPointerPressed);
+		m_coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &DirectXPage::OnPointerMoved);
+		m_coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &DirectXPage::OnPointerReleased);
 
 		// Begin processing input messages as they're delivered.
-		huh->m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
+		m_coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
 	});
-      huh = nullptr;
+
 	// Run task on a dedicated high priority background thread.
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
@@ -161,41 +160,6 @@ void DirectXPage::AppBarButton_Click(Object^ sender, RoutedEventArgs^ e)
 	// then fill in event handlers (like this one).
 }
 
-void DirectXPage::IDC_SET_COLORS_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_CLEAR_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_SET_POINTS_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_SIZE_OBJECT_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_CLEAR_CLEAR_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_SAVE_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_ROTO_HELP_BUTTON_Click(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
 void DirectXPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
 {
 	// When the pointer is pressed begin tracking the pointer movement.
@@ -217,48 +181,12 @@ void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 	m_main->StopTracking();
 }
 
-void DirectXPage::IDC_EXTERIOR_FACES_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_INTERIOR_FACES_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_FIRST_TO_LAST_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_AXIS_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_TOP_OR_LEFT_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-void DirectXPage::IDC_BOTTOM_OR_RIGHT_CHECKBOX_Checked(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	throw ref new Platform::NotImplementedException();
-}
-
-VOID DirectXPage::IDC_ROTATION_EDIT_TextChanged(Platform::Object ^ sender, Windows::UI::Xaml::RoutedEventArgs ^ e)
-{
-	return VOID();
-}
-
-void DirectXPage::OnCompositionScaleChanged(Windows::UI::Xaml::Controls::SwapChainPanel^ sender, Object^ args)
+void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
 {
 	critical_section::scoped_lock lock(m_main->GetCriticalSection());
 	m_deviceResources->SetCompositionScale(sender->CompositionScaleX, sender->CompositionScaleY);
 	m_main->CreateWindowSizeDependentResources();
 }
-
 
 void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventArgs^ e)
 {
@@ -267,27 +195,3 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 	m_main->CreateWindowSizeDependentResources();
 }
 
-void DirectXPage::IDC_SLIDER_ValueChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs^ e)
-{
-
-}
-
-
-void DirectXPage::SphereRadiusTextBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e)
-{
-
-}
-
-
-void DirectXPage::PointSpacingTextBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e)
-{
-
-}
-
-
-void DirectXPage::DrawSphereButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	
-	
-
-}
