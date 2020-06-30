@@ -1,12 +1,16 @@
 DirectX12UAP c++ template by Hot3dx - Jeff Kubitz
 ![Screenshot](https://github.com/hot3dx/DirectXXamlUAP/blob/master/Screenshot%20(46).png)
 
+MUST START MSVS 2019 as Administrator or you can create the directory need and save the files with Visual Studio Code!
+
 Designed to be placed in:
 1) In Directory:
 YOUR_DRIVE:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\ProjectTemplates\VC\Windows UAP\1033\
-Will Show in MS VS 2019 Templates
+  A) Will Show in MS VS 2019 Create New Project Templates
+  B) After placing all files in Directory Folder below Save All and close and restart VS 2019
 or
 
+Second Choice:
 Your_DRIVE:\Users\Your_Computer\Documents\Visual Studio 2019\Templates\ProjectTemplates\Visual C++ Project\
 
 1 A) Create Folder:
@@ -31,7 +35,7 @@ This template should work in your main Microsoft Templates for Visual Studio 201
 and show up when you want a template for a DirectX 12 UAP, Universal Windows Xaml
  App, where you can use the designer.
 
-Build is Visual Studio 2019, OS Build 1909, tools 142.
+Build is Visual Studio 2019, OS Build 1909, tools 142. Upto VS 2019 16.6
 
 The warp adapter will kick if your hardware does not support straight DirectX 12
 This means you can use this for the basis of Intel HD Graphics laptops,
