@@ -24,10 +24,12 @@ DirectX12XamlUAPApp
 
 5) Need Nuget Package WinPixEventRuntime.1.0.200127001
 
+6) Suggested Add package id="Microsoft.UI.Xaml" version="2.4.2" targetFramework="native
+
 It is the DirectX 12 Xaml spinning cube
 
 The sample works with a warpadapter or a DirectX12 Capable Graphics Card on Windows 10!
-The Sample is tested in x86 and x64 but not Arm
+The Sample is tested in Win32(x86), x64, Arm, Arm64
 
 Click the mouse and the cube stops rotating.
 
