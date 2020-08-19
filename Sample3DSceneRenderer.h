@@ -7,11 +7,12 @@
 namespace $ext_safeprojectname$
 {
 	// This sample renderer instantiates a basic rendering pipeline.
-	class Sample3DSceneRenderer
+	ref class Sample3DSceneRenderer
 	{
-	public:
+	public:virtual ~Sample3DSceneRenderer();
+	internal:
 		Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources);
-		~Sample3DSceneRenderer();
+		
 		void CreateDeviceDependentResources();
 		void CreateWindowSizeDependentResources();
 		void Update(DX::StepTimer const& timer);
@@ -27,15 +28,16 @@ namespace $ext_safeprojectname$
 		void ReleaseDeviceDependentResources();
 
 		//CCameraXYMoveRotation          m_CamXYMoveRotate;
-		bool                           is3DVisible;
+		
 
 		ID3D12GraphicsCommandList* GetComList() { return m_commandList.Get(); }
 
-	private:
+	protected private:
+		bool                           is3DVisible;
 		void LoadState();
 		void Rotate(float radians);
 
-	private:
+	
 		// Constant buffers must be 256-byte aligned.
 		static const UINT c_alignedConstantBufferSize = (sizeof(ModelViewProjectionConstantBuffer) + 255) & ~255;
 

@@ -8,7 +8,7 @@
 // Renders Direct2D and 3D content on the screen.
 namespace $safeprojectname$
 {
-	class $safeprojectname$Main : public DX::IDeviceNotify
+	ref class $safeprojectname$Main : public DX::IDeviceNotify
 	{
 	public:
 		$safeprojectname$Main(const std::shared_ptr<DX::DeviceResources>& deviceResources);
@@ -35,7 +35,9 @@ namespace $safeprojectname$
 
 		// Accessors
 
-		Sample3DSceneRenderer* GetSceneRenderer(){ return m_sceneRenderer.get();}
+		Sample3DSceneRenderer^ GetSceneRenderer(){ return m_sceneRenderer;}
+		void SetSceneRender() {
+			m_sceneRender = ref new SceneRender(m_deviceResources);
 
 		void PauseRequested() {// if //(m_updateState == $safeprojectname$::UpdateEngineState::Dynamics) 
 			m_pauseRequested = true; };
@@ -55,7 +57,7 @@ namespace $safeprojectname$
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
 		// TODO: Replace with your own content renderers.
-		std::unique_ptr<Sample3DSceneRenderer> m_sceneRenderer;
+		Sample3DSceneRenderer^ m_sceneRenderer;
 		//std::unique_ptr<SampleFpsTextRenderer> m_fpsTextRenderer;
 
 		Windows::Foundation::IAsyncAction^ m_renderLoopWorker;
