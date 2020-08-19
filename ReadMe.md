@@ -58,3 +58,7 @@ By:
 
 Should you want to do anything complicated Chuck Walbourn's DirectX 12 Toolkit
 That I also have will attach to this with a little work.
+
+8\19\20 Sample3DSceneRender was changed to a ref class and performance is improved
+
+Main.h and Main.cpp were modified to accept this change
